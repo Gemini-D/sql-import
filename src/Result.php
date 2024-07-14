@@ -12,18 +12,9 @@ declare(strict_types=1);
 
 namespace Fan\SqlImport;
 
-class ConfigProvider
+class Result
 {
-    public function __invoke(): array
+    public function __construct(public bool $isSuccess, public array $failedSqls = [])
     {
-        return [
-            'annotations' => [
-                'scan' => [
-                    'paths' => [
-                        __DIR__,
-                    ],
-                ],
-            ],
-        ];
     }
 }
