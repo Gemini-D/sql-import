@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace HyperfTest\Cases;
 
 use Fan\SqlImport\Importer;
+use Fan\SqlImport\Privilege;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Database\Connectors\ConnectionFactory;
 use Hyperf\Database\Connectors\MySqlConnector;
@@ -64,6 +65,28 @@ class ImportTest extends TestCase
         $import = new Importer($this->getContainer());
         $res = $import->importPath($config, __DIR__ . '/../sql/init.sql');
         $this->assertTrue($res->isSuccess);
+    }
+
+    public function testPrivilegeCreateUser()
+    {
+        $config = [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => 3307,
+            'database' => 'test',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+        ];
+
+        $pri = new Privilege($this->getContainer());
+        $res = $pri->createUser('test', '%', '', $config);
+        $this->assertTrue($res);
+
+        $res = $pri->grant('test', '%', '*', '*', $config);
+        $this->assertTrue($res);
     }
 
     public function getContainer()
