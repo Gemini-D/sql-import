@@ -9,9 +9,9 @@ composer create-project gemini/sql-import
 ```php
 <?php
 
-use Fan\SqlImport\Import;
+use Fan\SqlImport\Importer;
 
-$res = di()->get(Import::class)->load(
+$res = di()->get(Importer::class)->import(
     [
         'driver' => 'mysql',
         'host' => '127.0.0.1',

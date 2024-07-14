@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace HyperfTest\Cases;
 
-use Fan\SqlImport\Import;
+use Fan\SqlImport\Importer;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Database\Connectors\ConnectionFactory;
 use Hyperf\Database\Connectors\MySqlConnector;
@@ -42,8 +42,8 @@ class ImportTest extends TestCase
             'prefix' => '',
         ];
 
-        $import = new Import($this->getContainer());
-        $res = $import->load($config, file_get_contents(__DIR__ . '/../sql/init.sql'));
+        $import = new Importer($this->getContainer());
+        $res = $import->import($config, file_get_contents(__DIR__ . '/../sql/init.sql'));
         $this->assertTrue($res->isSuccess);
     }
 
@@ -61,8 +61,8 @@ class ImportTest extends TestCase
             'prefix' => '',
         ];
 
-        $import = new Import($this->getContainer());
-        $res = $import->loadPath($config, __DIR__ . '/../sql/init.sql');
+        $import = new Importer($this->getContainer());
+        $res = $import->importPath($config, __DIR__ . '/../sql/init.sql');
         $this->assertTrue($res->isSuccess);
     }
 

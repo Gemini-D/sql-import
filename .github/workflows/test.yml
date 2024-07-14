@@ -61,6 +61,10 @@ jobs:
           php --ri swow
       - name: Setup Packages
         run: composer update -o --no-scripts
+      - name: Setup MySQL Server
+        run: |
+          docker run --name mysql -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -d mysql:8.0 --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
+          mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS test charset=utf8mb4 collate=utf8mb4_unicode_ci;"
       - name: Run Test Cases
         run: |
           vendor/bin/php-cs-fixer fix --dry-run

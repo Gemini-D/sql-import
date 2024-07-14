@@ -17,7 +17,7 @@ use Hyperf\Database\Connectors\ConnectionFactory;
 use Psr\Container\ContainerInterface;
 use Throwable;
 
-class Import
+class Importer
 {
     protected ConnectionFactory $factory;
 
@@ -26,7 +26,7 @@ class Import
         $this->factory = $this->container->get(ConnectionFactory::class);
     }
 
-    public function load(array $config, string $sql): Result
+    public function import(array $config, string $sql): Result
     {
         $connection = $this->factory->make($config);
 
@@ -38,7 +38,7 @@ class Import
         return new Result(true);
     }
 
-    public function loadPath(array $config, string $path): Result
+    public function importPath(array $config, string $path): Result
     {
         // if file cannot be found throw errror
         if (! file_exists($path)) {
