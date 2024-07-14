@@ -10,14 +10,10 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Fan\SqlImport;
+namespace Fan\SqlImport\Exception;
 
-class Result
+use RuntimeException;
+
+class NotFoundException extends RuntimeException
 {
-    /**
-     * @param FailedSql[] $failedSqls
-     */
-    public function __construct(public bool $isSuccess, public array $failedSqls = [])
-    {
-    }
 }

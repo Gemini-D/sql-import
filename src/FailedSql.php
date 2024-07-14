@@ -12,12 +12,9 @@ declare(strict_types=1);
 
 namespace Fan\SqlImport;
 
-class Result
+class FailedSql
 {
-    /**
-     * @param FailedSql[] $failedSqls
-     */
-    public function __construct(public bool $isSuccess, public array $failedSqls = [])
+    public function __construct(public string $sql, public string $error)
     {
     }
 }

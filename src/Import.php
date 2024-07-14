@@ -12,9 +12,10 @@ declare(strict_types=1);
 
 namespace Fan\SqlImport;
 
+use Fan\SqlImport\Exception\NotFoundException;
 use Hyperf\Database\Connectors\ConnectionFactory;
-use Hyperf\Database\MySqlConnection;
 use Psr\Container\ContainerInterface;
+use Throwable;
 
 class Import
 {
@@ -27,7 +28,6 @@ class Import
 
     public function load(array $config, string $sql): Result
     {
-        /** @var MySqlConnection $connection */
         $connection = $this->factory->make($config);
 
         $res = $connection->getPdo()->exec($sql);
@@ -36,5 +36,40 @@ class Import
         }
 
         return new Result(true);
+    }
+
+    public function loadPath(array $config, string $path): Result
+    {
+        // if file cannot be found throw errror
+        if (! file_exists($path)) {
+            throw new NotFoundException(sprintf('File %s not found.', $path));
+        }
+
+        $pdo = $this->factory->make($config)->getPdo();
+        $fp = fopen($path, 'r');
+        $sql = '';
+        $result = new Result(true);
+        while (($line = fgets($fp)) !== false) {
+            try {
+                if (str_starts_with($line, '--') || $line == '') {
+                    continue;
+                }
+
+                // Add this line to the current segment
+                $sql .= $line;
+
+                // If it has a semicolon at the end, it's the end of the query
+                if (str_ends_with(trim($line), ';')) {
+                    $pdo->exec($sql);
+                    $sql = '';
+                }
+            } catch (Throwable $exception) {
+                $result->failedSqls[] = new FailedSql($sql, $exception->getMessage());
+                $sql = '';
+            }
+        }
+
+        fclose($fp);
+        return $result;
     }
 }

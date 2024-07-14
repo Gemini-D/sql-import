@@ -47,6 +47,25 @@ class ImportTest extends TestCase
         $this->assertTrue($res->isSuccess);
     }
 
+    public function testLoadPath()
+    {
+        $config = [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'database' => 'test',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+        ];
+
+        $import = new Import($this->getContainer());
+        $res = $import->loadPath($config, __DIR__ . '/../sql/init.sql');
+        $this->assertTrue($res->isSuccess);
+    }
+
     public function getContainer()
     {
         $container = Mockery::mock(ContainerInterface::class);
