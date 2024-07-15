@@ -19,6 +19,7 @@
     },
     "require": {
         "php": ">=8.1",
+        "ext-pdo": "*",
         "hyperf/database": "^3.0",
         "hyperf/db-connection": "^3.0"
     },
