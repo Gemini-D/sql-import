@@ -43,7 +43,7 @@ class Importer
         $result = new Result(true);
         foreach ($sqls as $line) {
             try {
-                if (str_starts_with($line, '--') || $line == '') {
+                if (str_starts_with($line, '#') || str_starts_with($line, '--') || $line == '') {
                     continue;
                 }
 

@@ -46,6 +46,9 @@ class ImportTest extends TestCase
         $import = new Importer($this->getContainer());
         $res = $import->import($config, file_get_contents(__DIR__ . '/../sql/init.sql'));
         $this->assertTrue($res->isSuccess);
+
+        $res = $import->import($config, file_get_contents(__DIR__ . '/../sql/init.sql'), false);
+        $this->assertTrue($res->isSuccess);
     }
 
     public function testLoadPath()
@@ -64,6 +67,9 @@ class ImportTest extends TestCase
 
         $import = new Importer($this->getContainer());
         $res = $import->importPath($config, __DIR__ . '/../sql/init.sql');
+        $this->assertTrue($res->isSuccess);
+
+        $res = $import->importPath($config, __DIR__ . '/../sql/init.sql', true);
         $this->assertTrue($res->isSuccess);
     }
 
